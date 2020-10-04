@@ -1,5 +1,5 @@
-async function getTodos() {
-  return await fetch('/api/todos').then((res) => res.json())
+async function getTodos(_queryKey, filter = 'all') {
+  return await fetch(`/api/todos?filter=${filter}`).then((res) => res.json())
 }
 
 export default getTodos

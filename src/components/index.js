@@ -1,0 +1,6 @@
+export { default as Footer } from './Footer'
+export { default as TodosListItem } from './TodosListItem/TodosListItem'
+export { default as TodosAdd } from './TodosAdd'
+export { default as TodosToggleAll } from './TodosToggleAll'
+export { default as TodosFilters } from './TodosFilters'
+export { default as TodosClearCompleted } from './TodosClearCompleted'

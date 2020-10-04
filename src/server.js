@@ -12,19 +12,39 @@ export function makeServer({ env } = { env: 'development' }) {
       application: RestSerializer.extend({
         root: false,
         embed: true,
-        normalize: (json) => ({
-          data: {
-            attributes: json,
-          },
-        }),
       }),
     },
 
     routes() {
       this.namespace = 'api'
-      this.timing = 500
+      this.timing = 200
 
-      this.resource('todos')
+      this.get('todos', (schema, request) => {
+        const filter = request.queryParams.filter
+
+        if (!filter || filter === 'all') {
+          return schema.todos.all()
+        }
+
+        return schema.todos.where({ completed: filter === 'completed' })
+      })
+
+      this.post('todos', (schema, request) => {
+        const todo = JSON.parse(request.requestBody)
+        schema.todos.create(todo)
+      })
+
+      this.patch('todos/:id', (schema, request) => {
+        const id = request.params.id
+        const todo = JSON.parse(request.requestBody)
+        schema.todos.find(id).update(todo)
+      })
+
+      this.delete('todos/:id', (schema, request) => {
+        const id = request.params.id
+        const todo = JSON.parse(request.requestBody)
+        schema.todos.find(id).destroy(todo)
+      })
 
       this.passthrough()
     },
