@@ -17,7 +17,7 @@ export function makeServer({ env } = { env: 'development' }) {
 
     routes() {
       this.namespace = 'api'
-      this.timing = 200
+      this.timing = 400
 
       this.get('todos', (schema, request) => {
         const filter = request.queryParams.filter
@@ -30,29 +30,17 @@ export function makeServer({ env } = { env: 'development' }) {
       })
 
       this.post('todos', (schema, request) => {
-        if (Math.random() > 0.7) {
-          return Response(500)
-        }
-
         const todo = JSON.parse(request.requestBody)
         schema.todos.create(todo)
       })
 
       this.patch('todos/:id', (schema, request) => {
-        if (Math.random() > 0.7) {
-          return Response(500)
-        }
-
         const id = request.params.id
         const todo = JSON.parse(request.requestBody)
         schema.todos.find(id).update(todo)
       })
 
       this.delete('todos/:id', (schema, request) => {
-        if (Math.random() > 0.7) {
-          return Response(500)
-        }
-
         const id = request.params.id
         const todo = JSON.parse(request.requestBody)
         schema.todos.find(id).destroy(todo)

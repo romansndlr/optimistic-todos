@@ -4,7 +4,7 @@ import { TODOS_FILTERS } from '../constants'
 import { useTodos } from '../hooks'
 
 function TodosFilters() {
-  const { currentFilter, setFilter, invalidateAllFilters } = useTodos()
+  const { currentFilter, setFilter } = useTodos()
 
   React.useEffect(() => {
     const onHashChange = () => {
@@ -16,10 +16,6 @@ function TodosFilters() {
 
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [setFilter])
-
-  React.useEffect(() => {
-    invalidateAllFilters()
-  }, [invalidateAllFilters])
 
   return (
     <ul className="filters">

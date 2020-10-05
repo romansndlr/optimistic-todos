@@ -1,15 +1,23 @@
 import React from 'react'
-import { usePaginatedQuery } from 'react-query'
 import { Footer, TodosAdd, TodosListItem, TodosToggleAll, TodosClearCompleted, TodosFilters } from './components'
 import { getTodos } from './services'
 import TodosContext from './TodosContext'
 
 function App() {
   const [currentFilter, setFilter] = React.useState('all')
-  const { resolvedData = [] } = usePaginatedQuery(['todos', currentFilter], getTodos)
+  const [todos, setTodos] = React.useState([])
+
+  const fetchTodos = React.useCallback(async () => {
+    const todos = await getTodos(currentFilter)
+    setTodos(todos)
+  }, [currentFilter])
+
+  React.useEffect(() => {
+    fetchTodos()
+  }, [fetchTodos])
 
   return (
-    <TodosContext.Provider value={{ todos: resolvedData, currentFilter, setFilter }}>
+    <TodosContext.Provider value={{ todos, refetchTodos: fetchTodos, currentFilter, setFilter }}>
       <main>
         <section className="todoapp">
           <header className="header">
@@ -19,13 +27,13 @@ function App() {
           <section className="main">
             <TodosToggleAll />
             <ul className="todo-list">
-              {resolvedData.map((todo) => (
+              {todos.map((todo) => (
                 <TodosListItem key={todo.id} todo={todo} />
               ))}
             </ul>
           </section>
           <footer className="footer">
-            <span className="todo-count">{resolvedData.length}</span>
+            <span className="todo-count">{todos.length}</span>
             <TodosFilters />
             <TodosClearCompleted />
           </footer>

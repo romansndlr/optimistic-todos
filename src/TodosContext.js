@@ -1,3 +1,3 @@
 import React from 'react'
 
-export default React.createContext({ todos: [], filter: '', setFilter: () => {} })
+export default React.createContext({ todos: [], filter: '', setFilter: () => {}, refetchTodos: () => {} })
