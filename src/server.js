@@ -1,4 +1,4 @@
-import { Server, Model, RestSerializer } from 'miragejs'
+import { Server, Model, RestSerializer, Response } from 'miragejs'
 
 export function makeServer({ env } = { env: 'development' }) {
   return new Server({
@@ -30,17 +30,29 @@ export function makeServer({ env } = { env: 'development' }) {
       })
 
       this.post('todos', (schema, request) => {
+        if (Math.random() > 0.7) {
+          return Response(500)
+        }
+
         const todo = JSON.parse(request.requestBody)
         schema.todos.create(todo)
       })
 
       this.patch('todos/:id', (schema, request) => {
+        if (Math.random() > 0.7) {
+          return Response(500)
+        }
+
         const id = request.params.id
         const todo = JSON.parse(request.requestBody)
         schema.todos.find(id).update(todo)
       })
 
       this.delete('todos/:id', (schema, request) => {
+        if (Math.random() > 0.7) {
+          return Response(500)
+        }
+
         const id = request.params.id
         const todo = JSON.parse(request.requestBody)
         schema.todos.find(id).destroy(todo)
