@@ -1,4 +1,4 @@
-import { Server, Model, RestSerializer, Response } from 'miragejs'
+import { Server, Model, RestSerializer } from 'miragejs'
 
 export function makeServer({ env } = { env: 'development' }) {
   return new Server({
@@ -17,7 +17,7 @@ export function makeServer({ env } = { env: 'development' }) {
 
     routes() {
       this.namespace = 'api'
-      this.timing = 400
+      this.timing = 300
 
       this.get('todos', (schema, request) => {
         const filter = request.queryParams.filter
